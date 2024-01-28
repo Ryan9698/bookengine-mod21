@@ -4,9 +4,9 @@ const bcrypt = require('bcrypt');
 
 const resolvers = {
   Query: {
-    me: async (parent, args, context) => {
+    me: async (parent, context) => {
       if (!context.user) {
-        throw new Error('Not authenticated');
+        return null;
       }
       return User.findById(context.user._id);
     },
@@ -20,7 +20,7 @@ const resolvers = {
 
       const correctPassword = await bcrypt.compare(password, user.password);
       if (!correctPassword) {
-        throw new Error('Incorrect credentials');
+        throw new Error('Incorrect password');
       }
 
       const token = signToken(user);
