@@ -1,4 +1,4 @@
-const { User } = require('../models/User');
+const User = require('../models/User');
 const { signToken } = require('../utils/auth');
 const bcrypt = require('bcrypt');
 
@@ -26,11 +26,20 @@ const resolvers = {
       const token = signToken(user);
       return { token, user };
     },
+   //Function which is causing console error.
     addUser: async (parent, { username, email, password }) => {
-      const user = await User.create({ username, email, password });
-      const token = signToken(user);
-      return { token, user };
+        console.log("Hello1")  
+        try {
+            const user = await User.create({ username, email, password });
+            const token = signToken(user);
+            console.log("user being created")
+            return { token, user };
+        } catch (error) {
+            console.error("Error in addUser resolver:", error);
+            throw new Error('Error creating user'); // or pass `error.message` for more specific error to the client
+        }
     },
+
     saveBook: async (parent, { input }, context) => {
       if (!context.user) {
         throw new Error('Not authenticated');
