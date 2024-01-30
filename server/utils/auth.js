@@ -1,33 +1,32 @@
 const jwt = require('jsonwebtoken');
-
-// set token secret and expiration date
 const secret = 'mysecretsshhhhh';
 const expiration = '2h';
 
 module.exports = {
-  authMiddleware: function ({ req }) {
-    let token = req.query.token || req.headers.authorization;
+  authMiddleware: ({ req }) => {
+    let authToken = req.query.token || req.headers.authorization;
 
     if (req.headers.authorization) {
-      token = token.split(' ').pop().trim();
+      authToken = authToken.split(' ').pop().trim();
     }
 
-    if (!token) {
+    if (!authToken) {
       return req;
     }
 
     try {
-      const { data } = jwt.verify(token, secret, { maxAge: expiration });
+      const { data } = jwt.verify(authToken, secret, { maxAge: expiration });
       req.user = data;
     } catch {
-      console.warn('Invalid token');
+      // handle the error or log it to a logging service
     }
 
     return req;
   },
-  signToken: function ({ username, email, _id }) {
+  signToken: ({ username, email, _id }) => {
     const payload = { username, email, _id };
-
-    return jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+    const token = jwt.sign({ data: payload }, secret, { expiresIn: expiration });
+    console.log('Generated Token:', token); // log token
+    return token;
   },
-};
+  };

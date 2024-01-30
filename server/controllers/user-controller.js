@@ -1,73 +1,86 @@
 // import user model
-const { User } = require('../models');
+import { User } from '../models';
 // import sign token function from auth
-const { signToken } = require('../utils/auth');
+import { signToken } from '../utils/auth';
 
-module.exports = {
+export
   // get a single user by either their id or their username
-  async getSingleUser({ user = null, params }, res) {
-    const foundUser = await User.findOne({
-      $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
-    });
+  async function getSingleUser({ user = null, params }, res) {
+  console.log("getSingleUser function called");
+  const foundUser = await User.findOne({
+    $or: [{ _id: user ? user._id : params.id }, { username: params.username }],
+  });
 
-    if (!foundUser) {
-      return res.status(400).json({ message: 'Cannot find a user with this id!' });
-    }
+  if (!foundUser) {
+    console.log("Cannot find a user with this id!");
+    return res.status(400).json({ message: 'Cannot find a user with this id!' });
+  }
 
-    res.json(foundUser);
-  },
+  res.json(foundUser);
+}
+export
   // create a user, sign a token, and send it back (to client/src/components/SignUpForm.js)
-  async createUser({ body }, res) {
-    const user = await User.create(body);
+  async function createUser({ body }, res) {
+  console.log("createUser function called");
+  const user = await User.create(body);
 
-    if (!user) {
-      return res.status(400).json({ message: 'Something is wrong!' });
-    }
-    const token = signToken(user);
-    res.json({ token, user });
-  },
+  if (!user) {
+    console.log("Something is wrong!");
+    return res.status(400).json({ message: 'Something is wrong!' });
+  }
+  const token = signToken(user);
+  res.json({ token, user });
+}
+export
   // login a user, sign a token, and send it back (to client/src/components/LoginForm.js)
   // {body} is destructured req.body
-  async login({ body }, res) {
-    const user = await User.findOne({ $or: [{ username: body.username }, { email: body.email }] });
-    if (!user) {
-      return res.status(400).json({ message: "Can't find this user" });
-    }
+  async function login({ body }, res) {
+  console.log("login function called");
+  const user = await User.findOne({ $or: [{ username: body.username }, { email: body.email }] });
+  if (!user) {
+    console.log("Can't find this user");
+    return res.status(400).json({ message: "Can't find this user" });
+  }
 
-    const correctPw = await user.isCorrectPassword(body.password);
+  const correctPw = await user.isCorrectPassword(body.password);
 
-    if (!correctPw) {
-      return res.status(400).json({ message: 'Wrong password!' });
-    }
-    const token = signToken(user);
-    res.json({ token, user });
-  },
+  if (!correctPw) {
+    console.log("Wrong password!");
+    return res.status(400).json({ message: 'Wrong password!' });
+  }
+  const token = signToken(user);
+  res.json({ token, user });
+}
+export
   // save a book to a user's `savedBooks` field by adding it to the set (to prevent duplicates)
   // user comes from `req.user` created in the auth middleware function
-  async saveBook({ user, body }, res) {
-    console.log(user);
-    try {
-      const updatedUser = await User.findOneAndUpdate(
-        { _id: user._id },
-        { $addToSet: { savedBooks: body } },
-        { new: true, runValidators: true }
-      );
-      return res.json(updatedUser);
-    } catch (err) {
-      console.log(err);
-      return res.status(400).json(err);
-    }
-  },
-  // remove a book from `savedBooks`
-  async deleteBook({ user, params }, res) {
+  async function saveBook({ user, body }, res) {
+  console.log("saveBook function called");
+  console.log(user);
+  try {
     const updatedUser = await User.findOneAndUpdate(
       { _id: user._id },
-      { $pull: { savedBooks: { bookId: params.bookId } } },
-      { new: true }
+      { $addToSet: { savedBooks: body } },
+      { new: true, runValidators: true }
     );
-    if (!updatedUser) {
-      return res.status(404).json({ message: "Couldn't find user with this id!" });
-    }
     return res.json(updatedUser);
-  },
-};
+  } catch (err) {
+    console.log(err);
+    return res.status(400).json(err);
+  }
+}
+export
+  // remove a book from `savedBooks`
+  async function deleteBook({ user, params }, res) {
+  console.log("deleteBook function called");
+  const updatedUser = await User.findOneAndUpdate(
+    { _id: user._id },
+    { $pull: { savedBooks: { bookId: params.bookId } } },
+    { new: true }
+  );
+  if (!updatedUser) {
+    console.log("Couldn't find user with this id!");
+    return res.status(404).json({ message: "Couldn't find user with this id!" });
+  }
+  return res.json(updatedUser);
+}
