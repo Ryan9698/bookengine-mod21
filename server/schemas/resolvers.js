@@ -18,26 +18,24 @@ const resolvers = {
         throw new Error('No user found with this email address');
       }
 
-      const correctPassword = await bcrypt.compare(password, user.password);
-      if (!correctPassword) {
+      const passwordMatch = await bcrypt.compare(password, user.password);
+      if (!passwordMatch) {
         throw new Error('Incorrect password');
       }
 
       const token = signToken(user);
       return { token, user };
     },
-   //Function which is causing console error.
+
     addUser: async (parent, { username, email, password }) => {
-        console.log("Hello1")  
-        try {
-            const user = await User.create({ username, email, password });
-            const token = signToken(user);
-            console.log("user being created")
-            return { token, user };
-        } catch (error) {
-            console.error("Error in addUser resolver:", error);
-            throw new Error('Error creating user'); // or pass `error.message` for more specific error to the client
-        }
+      try {
+        const user = await User.create({ username, email, password });
+        const token = signToken(user);
+        return { token, user };
+      } catch (error) {
+        console.error("Error in addUser resolver:", error);
+        throw new Error('Error creating user');
+      }
     },
 
     saveBook: async (parent, { input }, context) => {
@@ -51,6 +49,7 @@ const resolvers = {
       );
       return updatedUser;
     },
+
     removeBook: async (parent, { bookId }, context) => {
       if (!context.user) {
         throw new Error('Not authenticated');

@@ -2,7 +2,7 @@ import { useState } from 'react';
 import { Form, Button, Alert } from 'react-bootstrap';
 import { useMutation } from '@apollo/client';
 import { ADD_USER } from '../utils/mutations';
-// import { useApolloClient } from '@apollo/client';
+import { useApolloClient } from '@apollo/client';
 import Auth from '../utils/auth';
 
 const SignupForm = () => {
@@ -11,11 +11,12 @@ const SignupForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [addUser, { error }] = useMutation(ADD_USER)
 
-  // const apolloClient = useApolloClient(); 
+  const apolloClient = useApolloClient(); // This line allows the user to log in despire the "error?"
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
+    console.log(`User form data updated: ${name}: ${value}`);
   };
 
   const handleFormSubmit = async (event) => {
@@ -26,17 +27,23 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
-
-
     try {
       const { data } = await addUser({
         variables: userFormData
       });
+      if (error) {
+        console.log('GraphQL Error:', error);
+        setShowAlert(true);
+        return; 
+      }
       if (!error) {
-      Auth.login(data.addUser.token)}
+        Auth.login(data.addUser.token);
+        console.log('User logged in:', data.addUser.token);
+      }
     } catch (err) {
       console.error(err);
       setShowAlert(true);
+      console.log('Error during form submission:', err);
     }
 
     setUserFormData({
@@ -44,7 +51,9 @@ const SignupForm = () => {
       email: '',
       password: '',
     });
+    console.log('Form data reset');
   };
+
   return (
     <>
       <Form noValidate validated={validated} onSubmit={handleFormSubmit}>
