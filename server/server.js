@@ -4,6 +4,8 @@ const { expressMiddleware } = require('@apollo/server/express4');
 const path = require('path');
 const { authMiddleware } = require('./utils/auth');
 const cors = require('cors');
+require('dotenv').config();
+
 
 const { typeDefs, resolvers } = require('./schemas');
 const db = require('./config/connection');
@@ -21,12 +23,13 @@ const startApolloServer = async () => {
 
   app.use(express.urlencoded({ extended: false }));
   app.use(express.json());
-
+  app.use(cors()); 
+  
   app.use('/graphql', expressMiddleware(server, {
-    context: authMiddleware
+    context: authMiddleware 
   }));
 
-  app.use('/graphql', cors({ origin: 'https://studio.apollographql.com' }));
+
 
   if (process.env.NODE_ENV === 'production') {
     app.use(express.static(path.join(__dirname, '../client/dist')));
@@ -41,6 +44,10 @@ const startApolloServer = async () => {
       console.log(`Use GraphQL at http://localhost:${PORT}/graphql`);
     });
   });
+
+  db.on('error', (error) => {
+    console.error('MongoDB connection error:', error);
+  });  
 };
 
 startApolloServer();

@@ -11,7 +11,7 @@ const SignupForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [addUser, { error }] = useMutation(ADD_USER)
 
-  const apolloClient = useApolloClient(); // This line allows the user to log in despire the "error?"
+  const apolloClient = useApolloClient(); // This line allows the user to log in despite the "error?"
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
@@ -62,11 +62,13 @@ const SignupForm = () => {
         </Alert>
 
         <Form.Group className='mb-3'>
-          <Form.Label htmlFor='username'>Username</Form.Label>
+          <Form.Label htmlFor='signUp-username'>Username</Form.Label>
           <Form.Control
             type='text'
             placeholder='Your username'
             name='username'
+            id='signUp-username'
+            autoComplete='username'
             onChange={handleInputChange}
             value={userFormData.username}
             required
@@ -75,11 +77,13 @@ const SignupForm = () => {
         </Form.Group>
 
         <Form.Group className='mb-3'>
-          <Form.Label htmlFor='email'>Email</Form.Label>
+          <Form.Label htmlFor='signUp-email'>Email</Form.Label>
           <Form.Control
             type='email'
             placeholder='Your email address'
             name='email'
+            id='signUp-email'
+            autoComplete='email'
             onChange={handleInputChange}
             value={userFormData.email}
             required
@@ -88,11 +92,13 @@ const SignupForm = () => {
         </Form.Group>
 
         <Form.Group className='mb-3'>
-          <Form.Label htmlFor='password'>Password</Form.Label>
+          <Form.Label htmlFor='signUp-password'>Password</Form.Label>
           <Form.Control
             type='password'
             placeholder='Your password'
             name='password'
+            id='signUp-password'
+            autoComplete='new-password'
             onChange={handleInputChange}
             value={userFormData.password}
             required
