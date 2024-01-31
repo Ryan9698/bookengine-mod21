@@ -11,7 +11,6 @@ module.exports = {
     }
 
     if (!authToken) {
-      // throw new Error('No token provided');
       return req
     }
 
@@ -19,7 +18,7 @@ module.exports = {
       const { data } = jwt.verify(authToken, secret, { maxAge: expiration });
       req.user = data;
     } catch {
-      // handle the error or log it to a logging service
+      console.log('Invalid token');
     }
 
     return req;

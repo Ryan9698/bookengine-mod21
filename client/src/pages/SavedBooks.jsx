@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import { Container, Card, Button, Row, Col } from 'react-bootstrap';
 import { useQuery, useMutation } from '@apollo/client';
 import { GET_ME } from '../utils/queries'; 
@@ -24,7 +23,7 @@ const SavedBooks = () => {
         refetchQueries: [{ query: GET_ME }] 
       });
 
-      removeBookId(bookId); // Remove book ID from local storage
+      removeBookId(bookId); 
     } catch (err) {
       console.error(err);
     }
@@ -41,7 +40,7 @@ const SavedBooks = () => {
 
   return (
     <>
-      <div fluid className="text-light bg-dark p-5 ">
+      <div className="fluid text-light bg-dark p-5 ">
         <Container>
           <h1>Viewing saved books!</h1>
         </Container>
