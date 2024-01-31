@@ -9,7 +9,8 @@ const resolvers = {
         if (!context.user) {
           return null;
         }
-        return await User.findById(context.user._id);
+        console.log("Fetched user:", user);
+        return await User.findById(context.user._id);       
       } catch (error) {
         console.error("Error in me resolver:", error);
         throw new Error('Error fetching user data');

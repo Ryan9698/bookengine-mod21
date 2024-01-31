@@ -63,6 +63,7 @@ export
       { $addToSet: { savedBooks: body } },
       { new: true, runValidators: true }
     );
+    console.log('Updated user:', updatedUser);
     return res.json(updatedUser);
   } catch (err) {
     console.log(err);
@@ -72,12 +73,12 @@ export
 export
   // remove a book from `savedBooks`
   async function deleteBook({ user, params }, res) {
-  console.log("deleteBook function called");
   const updatedUser = await User.findOneAndUpdate(
     { _id: user._id },
     { $pull: { savedBooks: { bookId: params.bookId } } },
     { new: true }
   );
+  console.log('Updated user:', updatedUser);
   if (!updatedUser) {
     console.log("Couldn't find user with this id!");
     return res.status(404).json({ message: "Couldn't find user with this id!" });
