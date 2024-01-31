@@ -11,7 +11,8 @@ module.exports = {
     }
 
     if (!authToken) {
-      throw new Error('No token provided');
+      // throw new Error('No token provided');
+      return req
     }
 
     try {
