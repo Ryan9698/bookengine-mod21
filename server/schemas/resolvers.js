@@ -4,19 +4,25 @@ const bcrypt = require('bcrypt');
 
 const resolvers = {
   Query: {
-    me: async (parent, context) => {
+    me: async (parent, args, context) => {
       try {
         if (!context.user) {
+          console.log("Not authenticated");
           return null;
         }
-        console.log("Fetched user:", user);
-        return await User.findById(context.user._id);       
+        // Fetch the user based on the ID stored in the context
+        const user = await User.findById(context.user._id);
+        
+        // console.log("Fetched user:", user);
+
+        return user;
       } catch (error) {
         console.error("Error in me resolver:", error);
         throw new Error('Error fetching user data');
       }
     },
   },
+
   Mutation: {
     login: async (parent, { email, password }) => {
       try {

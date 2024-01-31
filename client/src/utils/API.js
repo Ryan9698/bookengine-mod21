@@ -2,7 +2,6 @@ import { GET_ME } from "./queries";
 import { ADD_USER } from "./mutations";
 import { LOGIN_USER } from "./mutations";
 import { SAVE_BOOK, REMOVE_BOOK } from "./mutations";
-// import { ApolloClient } from "@apollo/client";
 
 export const getMe = async (apolloClient) => {
   try {

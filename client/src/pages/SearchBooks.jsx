@@ -15,7 +15,6 @@ const SearchBooks = () => {
   const [savedBookIds, setSavedBookIds] = useState(getSavedBookIds());
 
   useEffect(() => {
-    // Effect to save the book IDs to localStorage when component unmounts
     return () => saveBookIds(savedBookIds);
   });
 

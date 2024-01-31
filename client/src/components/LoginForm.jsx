@@ -10,7 +10,7 @@ const LoginForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [login, { error }] = useMutation(LOGIN_USER);
   if (error) {
-  console.error("Error during signup:", error);
+  console.error("Error during sign-up:", error);
   setShowAlert(true);
   return;
 }
