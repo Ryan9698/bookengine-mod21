@@ -20,7 +20,7 @@ N/A
 
 ## Usage
 
-Using this app is easy. Just type in the name of the book you want to look up in the search bar and if the book exists in their catalog, it will render on the page. To utilize the app however, you need to create an account with a username, e-mail, and password. Once logged in, you have the ability to save searched books to the database which you can recall via the saved books link at the top of the page. To delete a book from your list, just click the delete button and it will be automatically removed from  your list and the database.
+Using this app is easy. Just type in the name of the book you want to look up in the search bar and if the book exists in their catalog, it will render on the page. To utilize the app however, you need to create an account with a username, e-mail, and password. Once logged in, you have the ability to save searched books to the database which you can recall via the "See Your Books" link at the top of the page. To delete a book from your list, just click the delete button and it will be automatically removed from  your list and the database.
 
 ## Contributors
 
