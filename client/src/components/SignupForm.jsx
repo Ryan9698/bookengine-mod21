@@ -11,12 +11,11 @@ const SignupForm = () => {
   const [showAlert, setShowAlert] = useState(false);
   const [addUser, { error }] = useMutation(ADD_USER)
 
-  useApolloClient(); // This line allows the user to log in despite the "error?"
+  useApolloClient(); 
 
   const handleInputChange = (event) => {
     const { name, value } = event.target;
     setUserFormData({ ...userFormData, [name]: value });
-    console.log(`User form data updated: ${name}: ${value}`);
   };
 
   const handleFormSubmit = async (event) => {
